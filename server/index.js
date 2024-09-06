@@ -21,8 +21,15 @@ app.use(
   })
 );
 app.use(express.json());
+
+// test route at home
+app.get("/", (req, res) => {
+  res.send("Hello, world!");
+});
+
 app.use("/api/campaigns", campaignRoutes);
 
 app.listen(PORT, () => console.log(`Server running on port: ${PORT}`));
+
 
 
