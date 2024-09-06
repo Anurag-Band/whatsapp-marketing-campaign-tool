@@ -9,7 +9,10 @@ const {
 } = require("../controllers/campaign.controller");
 
 const router = express.Router();
-const upload = multer({ dest: "uploads/" });
+
+// Set up multer to store files in memory
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 // Get all campaigns
 router.get("/", getAllCampaigns);
@@ -27,4 +30,5 @@ router.post("/:id/send", sendMessages);
 router.post("/:id/upload", upload.single("file"), uploadContacts);
 
 module.exports = router;
+
 

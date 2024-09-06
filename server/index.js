@@ -24,7 +24,8 @@ app.use(express.json());
 
 // test route at home
 app.get("/", (req, res) => {
-  res.send("Hello, world!");
+  console.log("App is Running Properly!");
+  res.send("App is Running Properly!");
 });
 
 app.use("/api/campaigns", campaignRoutes);
@@ -44,5 +45,7 @@ process.on("uncaughtException", (err) => {
   console.log(`Shutting down the server due to Uncaught Exception`);
   process.exit(1);
 });
+
+
 
 
