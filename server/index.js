@@ -18,6 +18,7 @@ connectDatabase();
 app.use(
   cors({
     origin: FRONTEND_URL,
+    methods: ["GET", "POST", "HEAD", "PUT", "PATCH", "DELETE"],
   })
 );
 app.use(express.json());
@@ -45,6 +46,8 @@ process.on("uncaughtException", (err) => {
   console.log(`Shutting down the server due to Uncaught Exception`);
   process.exit(1);
 });
+
+
 
 
 
