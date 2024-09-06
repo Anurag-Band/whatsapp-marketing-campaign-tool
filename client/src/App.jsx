@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 
+const SERVER_URL = import.meta.env.VITE_SERVER_URL;
+
 const App = () => {
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
@@ -14,7 +16,7 @@ const App = () => {
   }, []);
 
   const fetchCampaigns = async () => {
-    const response = await axios.get("http://localhost:5000/api/campaigns");
+    const response = await axios.get(`${SERVER_URL}/api/campaigns`);
     setCampaigns(response.data);
   };
 
@@ -49,7 +51,7 @@ const App = () => {
       return;
     }
 
-    const res = await axios.post("http://localhost:5000/api/campaigns", {
+    const res = await axios.post(`${SERVER_URL}/api/campaigns`, {
       name,
       message,
       contacts: contactList, // Send the formatted contacts
@@ -68,7 +70,7 @@ const App = () => {
   };
   const handleSendAll = async (campaignId) => {
     const res = await axios.post(
-      `http://localhost:5000/api/campaigns/${campaignId}/sendAll`
+      `${SERVER_URL}/api/campaigns/${campaignId}/sendAll`
     );
 
     if (res) {
@@ -82,7 +84,7 @@ const App = () => {
 
   const handleSend = async (campaignId, contact) => {
     const res = await axios.post(
-      `http://localhost:5000/api/campaigns/${campaignId}/send`,
+      `${SERVER_URL}/api/campaigns/${campaignId}/send`,
       {
         contact,
       }
@@ -106,7 +108,7 @@ const App = () => {
 
     try {
       const res = await axios.post(
-        `http://localhost:5000/api/campaigns/${campaignId}/upload`,
+        `${SERVER_URL}/api/campaigns/${campaignId}/upload`,
         formData,
         {
           headers: {
@@ -179,7 +181,7 @@ const App = () => {
           </div>
         ) : (
           <ul className="mt-4">
-            {campaigns.map((campaign) => (
+            {campaigns?.map((campaign) => (
               <li key={campaign._id} className="bg-white p-2 rounded-lg">
                 <div className="flex justify-between items-center">
                   <span className="font-semibold">{campaign.name}</span>
@@ -258,7 +260,6 @@ const App = () => {
                 >
                   Send Messages to All
                 </button>
-                {/* horizontal line */}
                 <hr className="p-1 border my-3 border-b-gray-800 " />
               </li>
             ))}
@@ -270,4 +271,5 @@ const App = () => {
 };
 
 export default App;
+
 
