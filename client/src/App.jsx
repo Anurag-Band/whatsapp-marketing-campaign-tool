@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import loader from "./assets/loader.svg";
 
 const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
@@ -10,14 +11,17 @@ const App = () => {
   const [contacts, setContacts] = useState("");
   const [campaigns, setCampaigns] = useState([]);
   const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchCampaigns();
   }, []);
 
   const fetchCampaigns = async () => {
+    setLoading(true);
     const response = await axios.get(`${SERVER_URL}/api/campaigns`);
     setCampaigns(response.data);
+    setLoading(false);
   };
 
   const handleSubmit = async (e) => {
@@ -172,7 +176,11 @@ const App = () => {
         <h2 className="text-xl font-semibold mt-6 text-purple-600 mb-4">
           Existing Campaigns
         </h2>
-        {campaigns.length === 0 ? (
+        {loading ? (
+          <div className="text-center text-gray-600 flex items-center justify-center h-24 w-full border border-gray-300 shadow-md rounded-md">
+            <img src={loader} alt="loader" className="w-24 h-24" />
+          </div>
+        ) : campaigns.length === 0 ? (
           // make a box for no campaigns with centered text
           <div className="text-center text-gray-600 flex items-center justify-center h-24 w-full border border-gray-300 shadow-md rounded-md">
             <p className="text-gray-600 text-xl font-semibold">
@@ -271,5 +279,11 @@ const App = () => {
 };
 
 export default App;
+
+
+
+
+
+
 
 
