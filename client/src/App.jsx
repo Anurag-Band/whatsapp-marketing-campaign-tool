@@ -7,11 +7,7 @@ import CampaignList from "./components/CampaignList/CampaignList";
 const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 const App = () => {
-  const [name, setName] = useState("");
-  const [message, setMessage] = useState("");
-  const [contacts, setContacts] = useState("");
   const [campaigns, setCampaigns] = useState([]);
-  const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -31,15 +27,7 @@ const App = () => {
         <h1 className="text-2xl font-bold text-purple-600 mb-6 text-center">
           Create WhatsApp Campaign
         </h1>
-        <CampaignForm
-          name={name}
-          setName={setName}
-          message={message}
-          setMessage={setMessage}
-          contacts={contacts}
-          setContacts={setContacts}
-          fetchCampaigns={fetchCampaigns}
-        />
+        <CampaignForm fetchCampaigns={fetchCampaigns} />
         <h2 className="text-xl font-semibold mt-6 text-purple-600 mb-4">
           Existing Campaigns
         </h2>
@@ -55,33 +43,12 @@ const App = () => {
             </p>
           </div>
         ) : (
-          <CampaignList
-            campaigns={campaigns}
-            file={file}
-            setFile={setFile}
-            fetchCampaigns={fetchCampaigns}
-          />
+          <CampaignList campaigns={campaigns} fetchCampaigns={fetchCampaigns} />
         )}
       </div>
     </div>
   );
 };
 
+
 export default App;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

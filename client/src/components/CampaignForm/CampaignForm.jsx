@@ -1,16 +1,12 @@
 import axios from "axios";
+import { useState } from "react";
 import { toast } from "react-toastify";
 const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
-const CampaignForm = ({
-  name,
-  setName,
-  message,
-  setMessage,
-  contacts,
-  setContacts,
-  fetchCampaigns,
-}) => {
+const CampaignForm = ({ fetchCampaigns }) => {
+  const [name, setName] = useState("");
+  const [message, setMessage] = useState("");
+  const [contacts, setContacts] = useState("");
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -93,4 +89,5 @@ const CampaignForm = ({
 };
 
 export default CampaignForm;
+
 

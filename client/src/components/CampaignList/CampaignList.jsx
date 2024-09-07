@@ -1,8 +1,11 @@
 import axios from "axios";
+import { useState } from "react";
 import { toast } from "react-toastify";
 const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
-const CampaignList = ({ campaigns, file, setFile, fetchCampaigns }) => {
+const CampaignList = ({ campaigns, fetchCampaigns }) => {
+  const [file, setFile] = useState(null);
+
   const handleSendAll = async (campaignId) => {
     const res = await axios.post(
       `${SERVER_URL}/api/campaigns/${campaignId}/sendAll`
@@ -155,4 +158,5 @@ const CampaignList = ({ campaigns, file, setFile, fetchCampaigns }) => {
 };
 
 export default CampaignList;
+
 
