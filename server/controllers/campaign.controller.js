@@ -18,7 +18,7 @@ exports.createCampaign = async (req, res) => {
           number: contact.number.trim(),
           status: "pending",
         }))
-        .filter((contact) => contact.number) // Filter out any empty contact numbers
+        .filter((contact) => contact.number)
     : [];
 
   // Check for valid 10-digit numbers
@@ -52,19 +52,14 @@ exports.sendAllMessages = async (req, res) => {
   const campaign = await Campaign.findById(id);
   if (!campaign) return res.status(404).send("Campaign not found");
 
-  // Track the number of successfully sent messages
   let sentCount = 0;
 
   for (const contact of campaign.contacts) {
     if (contact.status === "pending") {
       try {
         // Simulate sending a message
-        // Replace this with actual sending logic
-        // For example, you might call an external API to send the message
-
-        // Simulate successful sending
-        contact.status = "sent"; // Mark as sent
-        sentCount++; // Increment the sent count
+        contact.status = "sent";
+        sentCount++;
       } catch (error) {
         contact.status = "failed"; // Mark as failed
       }
@@ -72,12 +67,12 @@ exports.sendAllMessages = async (req, res) => {
   }
 
   // Update the campaign's sent and pending counts
-  campaign.messagesSent += sentCount; // Update sent count
-  campaign.messagesPending -= sentCount; // Decrement pending count based on successful sends
+  campaign.messagesSent += sentCount;
+  campaign.messagesPending -= sentCount;
 
-  await campaign.save(); // Save the updated campaign
+  await campaign.save();
 
-  res.status(200).json(campaign); // Return the updated campaign
+  res.status(200).json(campaign);
 };
 // Send a message to a specific contact
 exports.sendMessages = async (req, res) => {
@@ -91,12 +86,11 @@ exports.sendMessages = async (req, res) => {
 
   try {
     // Simulate sending a message
-    // Replace this with actual sending logic
-    campaign.contacts[contactIndex].status = "sent"; // Mark as sent
+    campaign.contacts[contactIndex].status = "sent";
     campaign.messagesSent++;
-    campaign.messagesPending--; // Decrement pending count
+    campaign.messagesPending--;
   } catch (error) {
-    campaign.contacts[contactIndex].status = "failed"; // Mark as failed
+    campaign.contacts[contactIndex].status = "failed";
   }
 
   await campaign.save();
@@ -110,7 +104,7 @@ exports.uploadContacts = async (req, res) => {
   if (!campaign) return res.status(404).send("Campaign not found");
 
   // Read the uploaded CSV file
-  const contacts = fs.readFileSync(req.file.path, "utf8").split(","); // Split by commas for CSV format
+  const contacts = fs.readFileSync(req.file.path, "utf8").split(",");
 
   // Format and validate contacts
   const formattedContacts = contacts
@@ -118,7 +112,7 @@ exports.uploadContacts = async (req, res) => {
       const trimmedContact = contact.trim();
       return { number: trimmedContact, status: "pending" };
     })
-    .filter((contact) => contact.number); // Filter out any empty contact numbers
+    .filter((contact) => contact.number);
 
   // Check for valid 10-digit numbers
   const invalidContacts = formattedContacts.filter(
@@ -137,4 +131,6 @@ exports.uploadContacts = async (req, res) => {
 
   res.json(campaign);
 };
+
+
 
