@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import loader from "./assets/loader.svg";
-import CampaignForm from "./components/CampaignForm/CampaignForm";
-import CampaignList from "./components/CampaignList/CampaignList";
+import CampaignForm from "./components/CampaignForm";
+import CampaignList from "./components/CampaignList";
+import Loader from "./components/Loader";
 
 const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
@@ -31,24 +31,25 @@ const App = () => {
         <h2 className="text-xl font-semibold mt-6 text-purple-600 mb-4">
           Existing Campaigns
         </h2>
-        {loading ? (
-          <div className="text-center text-gray-600 flex items-center justify-center h-24 w-full border border-gray-300 shadow-md rounded-md">
-            <img src={loader} alt="loader" className="w-24 h-24" />
-          </div>
-        ) : campaigns.length === 0 ? (
-          // make a box for no campaigns with centered text
-          <div className="text-center text-gray-600 flex items-center justify-center h-24 w-full border border-gray-300 shadow-md rounded-md">
-            <p className="text-gray-600 text-xl font-semibold">
-              No campaigns found.
-            </p>
-          </div>
-        ) : (
-          <CampaignList campaigns={campaigns} fetchCampaigns={fetchCampaigns} />
-        )}
+
+        <Loader loading={loading} />
+        <CampaignList
+          campaigns={campaigns}
+          fetchCampaigns={fetchCampaigns}
+          loading={loading}
+        />
       </div>
     </div>
   );
 };
+
+
+
+
+
+
+
+
 
 
 export default App;

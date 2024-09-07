@@ -3,8 +3,9 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
-const CampaignList = ({ campaigns, fetchCampaigns }) => {
+const CampaignList = ({ campaigns, fetchCampaigns, loading }) => {
   const [file, setFile] = useState(null);
+  console.log(campaigns);
 
   const handleSendAll = async (campaignId) => {
     const res = await axios.post(
@@ -71,8 +72,12 @@ const CampaignList = ({ campaigns, fetchCampaigns }) => {
       }
     }
   };
-  return (
-    <ul className="mt-4">
+  return !loading && campaigns?.length === 0 ? (
+    <div className="text-center text-gray-600 flex items-center justify-center h-24 w-full border border-gray-300 shadow-md rounded-md">
+      <p className="text-gray-600 text-xl font-semibold">No campaigns found.</p>
+    </div>
+  ) : (
+    <ul data-testid="campaign-list" className="mt-4">
       {campaigns?.map((campaign) => (
         <li key={campaign._id} className="bg-white p-2 rounded-lg">
           <div className="flex justify-between items-center">
@@ -158,5 +163,4 @@ const CampaignList = ({ campaigns, fetchCampaigns }) => {
 };
 
 export default CampaignList;
-
 
