@@ -1,4 +1,4 @@
-# WhatsApp Marketing Campaign Manager
+# WhatsApp Marketing Campaign Tool
 
 ![WhatsApp Campaign](https://github.com/Anurag-Band/whatsapp-marketing-campaign-tool/blob/main/client/src/assets/home_page.png)
 
