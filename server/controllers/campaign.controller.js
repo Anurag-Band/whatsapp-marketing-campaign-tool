@@ -1,4 +1,3 @@
-const fs = require("fs");
 const Campaign = require("../models/campaign.model");
 
 // Get all campaigns
@@ -100,11 +99,13 @@ exports.sendMessages = async (req, res) => {
 // Upload contacts via CSV
 exports.uploadContacts = async (req, res) => {
   const { id } = req.params;
+
   const campaign = await Campaign.findById(id);
   if (!campaign) return res.status(404).send("Campaign not found");
 
-  // Read the uploaded CSV file
-  const contacts = fs.readFileSync(req.file.path, "utf8").split(",");
+  if (!req.file) return res.status(400).send("No file uploaded");
+
+  const contacts = req.file.buffer.toString().split(",");
 
   // Format and validate contacts
   const formattedContacts = contacts
@@ -119,18 +120,16 @@ exports.uploadContacts = async (req, res) => {
     (contact) => !/^\d{10}$/.test(contact.number)
   );
   if (invalidContacts.length > 0) {
-    return res
-      .status(400)
-      .json({ error: "All contact numbers must be exactly 10 digits long." });
+    return res.status(400).json({
+      error: "All contact numbers must be exactly 10 digits long.",
+    });
   }
 
-  // Add the valid contacts to the campaign
   campaign.contacts.push(...formattedContacts);
   campaign.messagesPending += formattedContacts.length;
+
   await campaign.save();
 
   res.json(campaign);
 };
-
-
 

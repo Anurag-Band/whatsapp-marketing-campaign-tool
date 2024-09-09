@@ -1,11 +1,10 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 const CampaignList = ({ campaigns, fetchCampaigns, loading }) => {
   const [file, setFile] = useState(null);
-  console.log(campaigns);
 
   const handleSendAll = async (campaignId) => {
     const res = await axios.post(
@@ -41,8 +40,18 @@ const CampaignList = ({ campaigns, fetchCampaigns, loading }) => {
     setFile(e.target.files[0]);
   };
 
+  useEffect(() => {
+    if (!file) return;
+
+    toast.success("File is Ready to Upload!", {
+      position: "top-right",
+      autoClose: 5000,
+    });
+  }, [file]);
+
   const handleUpload = async (campaignId) => {
     const formData = new FormData();
+    if (!file) return;
     formData.append("file", file);
 
     try {
@@ -97,7 +106,7 @@ const CampaignList = ({ campaigns, fetchCampaigns, loading }) => {
             <input
               type="file"
               accept=".csv"
-              onChange={handleFileChange}
+              onChange={(e) => handleFileChange(e)}
               className="mb-2"
             />
             <button
@@ -118,8 +127,8 @@ const CampaignList = ({ campaigns, fetchCampaigns, loading }) => {
                 </tr>
               </thead>
               <tbody>
-                {campaign.contacts.map((contact) => (
-                  <tr key={contact.number} className="hover:bg-gray-100">
+                {campaign.contacts.map((contact, index) => (
+                  <tr key={index} className="hover:bg-gray-100">
                     <td className="border px-4 py-2">{contact.number}</td>
                     <td
                       className={`border px-4 py-2 ${
@@ -163,4 +172,27 @@ const CampaignList = ({ campaigns, fetchCampaigns, loading }) => {
 };
 
 export default CampaignList;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
